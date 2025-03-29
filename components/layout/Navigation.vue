@@ -1,35 +1,35 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
-import { useColors } from 'vuestic-ui'
-import { storeToRefs } from 'pinia'
-import VaIconMenuCollapsed from '@/components/icons/VaIconMenuCollapsed.vue'
-import { useGlobalStore } from '@/stores/global'
+import { computed, ref } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+import { useColors } from 'vuestic-ui';
+import { storeToRefs } from 'pinia';
+import VaIconMenuCollapsed from '@/components/icons/VaIconMenuCollapsed.vue';
+import { useGlobalStore } from '@/stores/global';
 
-const { isSidebarMinimized } = storeToRefs(useGlobalStore())
+const { isSidebarMinimized } = storeToRefs(useGlobalStore());
 
-const _router = useRouter()
-const _route = useRoute()
+const _router = useRouter();
+const _route = useRoute();
 
 type BreadcrumbNavigationItem = {
-  label: string
-  to: string
-  hasChildren: boolean
-}
+  label: string;
+  to: string;
+  hasChildren: boolean;
+};
 
 const items = ref<Array<{ title: string; to: string; icon?: string }>>([
   // ... existing code ...
-])
+]);
 
-const { getColor } = useColors()
+const { getColor } = useColors();
 
-const collapseIconColor = computed(() => getColor('secondary'))
+const collapseIconColor = computed(() => getColor('secondary'));
 
 const handleBreadcrumbClick = (item: BreadcrumbNavigationItem) => {
   if (!item.hasChildren) {
     // router.push(item.to)
   }
-}
+};
 </script>
 
 <template>

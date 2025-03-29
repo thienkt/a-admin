@@ -81,10 +81,12 @@ The application includes a comprehensive error handling system:
 ### Components:
 
 1. **Error Layout** (`layouts/error.vue`):
+
    - A dedicated layout for error pages
    - Provides consistent branding with simplified navigation
 
 2. **Global Error Page** (`error.vue`):
+
    - Handles all types of errors (404, 403, 500, etc.)
    - Displays appropriate messages based on error type
    - Uses the error layout
@@ -99,21 +101,21 @@ To throw an error from any component or page:
 
 ```javascript
 // Option 1: Use the composable
-const { throwPageError } = useErrorHandling()
-throwPageError(403, 'Access denied')
+const { throwPageError } = useErrorHandling();
+throwPageError(403, 'Access denied');
 
 // Option 2: Use Nuxt's built-in function
 throw createError({
   statusCode: 500,
-  message: 'Internal server error'
-})
+  message: 'Internal server error',
+});
 ```
 
 To show an error toast without redirecting:
 
 ```javascript
-const { showToastError } = useErrorHandling()
-showToastError('Operation failed. Please try again.')
+const { showToastError } = useErrorHandling();
+showToastError('Operation failed. Please try again.');
 ```
 
 ### API Error Handling:
@@ -121,14 +123,14 @@ showToastError('Operation failed. Please try again.')
 The `handleApiError` utility simplifies API error management:
 
 ```javascript
-const { handleApiError } = useErrorHandling()
+const { handleApiError } = useErrorHandling();
 
 try {
   // API call
 } catch (error) {
-  handleApiError(error, { 
-    showToast: true,   // Show toast notification
-    throwError: false  // Don't redirect to error page
-  })
+  handleApiError(error, {
+    showToast: true, // Show toast notification
+    throwError: false, // Don't redirect to error page
+  });
 }
 ```

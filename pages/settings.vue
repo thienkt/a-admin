@@ -1,4 +1,9 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+const email = ref('');
+const displayName = ref('');
+const emailNotifications = ref(true);
+const pushNotifications = ref(true);
+</script>
 
 <template>
   <div class="settings-page">
@@ -33,10 +38,3 @@
     </div>
   </div>
 </template>
-
-<script lang="ts">
-const email = ref('')
-const displayName = ref('')
-const emailNotifications = ref(true)
-const pushNotifications = ref(true)
-</script>

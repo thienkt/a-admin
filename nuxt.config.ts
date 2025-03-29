@@ -1,5 +1,5 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
-import viteSvgLoader from 'vite-svg-loader'
+import viteSvgLoader from 'vite-svg-loader';
 
 export default defineNuxtConfig({
   ssr: false,
@@ -51,4 +51,4 @@ export default defineNuxtConfig({
   vite: {
     plugins: [viteSvgLoader()],
   },
-})
+});

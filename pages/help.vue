@@ -1,4 +1,7 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+const subject = ref('');
+const message = ref('');
+</script>
 
 <template>
   <div class="help-page">
@@ -61,8 +64,3 @@
     </div>
   </div>
 </template>
-
-<script lang="ts">
-const subject = ref('')
-const message = ref('')
-</script>

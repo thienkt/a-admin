@@ -1,20 +1,20 @@
 <script lang="ts" setup>
-import { computed } from 'vue'
-import { useColors } from 'vuestic-ui'
-import DataSectionItem from './DataSectionItem.vue'
+import { computed } from 'vue';
+import { useColors } from 'vuestic-ui';
+import DataSectionItem from './DataSectionItem.vue';
 
 interface DashboardMetric {
-  id: string
-  title: string
-  value: string
-  icon: string
-  changeText: string
-  changeDirection: 'up' | 'down'
-  iconBackground: string
-  iconColor: string
+  id: string;
+  title: string;
+  value: string;
+  icon: string;
+  changeText: string;
+  changeDirection: 'up' | 'down';
+  iconBackground: string;
+  iconColor: string;
 }
 
-const { getColor } = useColors()
+const { getColor } = useColors();
 
 const dashboardMetrics = computed<DashboardMetric[]>(() => [
   {
@@ -47,7 +47,7 @@ const dashboardMetrics = computed<DashboardMetric[]>(() => [
     iconBackground: getColor('warning'),
     iconColor: getColor('on-warning'),
   },
-])
+]);
 </script>
 
 <template>

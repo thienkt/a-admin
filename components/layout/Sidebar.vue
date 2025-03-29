@@ -1,9 +1,9 @@
 <script lang="ts">
-import { defineComponent, watch, ref, computed } from 'vue'
-import { useRoute } from 'vue-router'
-import { useColors } from 'vuestic-ui'
+import { defineComponent, watch, ref, computed } from 'vue';
+import { useRoute } from 'vue-router';
+import { useColors } from 'vuestic-ui';
 
-import { navigationRoutes, type INavigationRoute } from '@/constants'
+import { navigationRoutes, type INavigationRoute } from '@/constants';
 
 export default defineComponent({
   name: 'Sidebar',
@@ -14,52 +14,52 @@ export default defineComponent({
   emits: ['update:visible'],
 
   setup: (props, { emit }) => {
-    const { getColor, colorToRgba } = useColors()
-    const route = useRoute()
+    const { getColor, colorToRgba } = useColors();
+    const route = useRoute();
 
-    const value = ref<boolean[]>([])
+    const value = ref<boolean[]>([]);
 
     const writableVisible = computed({
       get: () => props.visible,
       set: (v: boolean) => emit('update:visible', v),
-    })
+    });
 
     const isActiveChildRoute = (child: INavigationRoute) =>
-      route.name === child.name
+      route.name === child.name;
 
     const routeHasActiveChild = (section: INavigationRoute) => {
       if (!section.children) {
-        return route.path.endsWith(`${section.name}`)
+        return route.path.endsWith(`${section.name}`);
       }
 
       return section.children.some(({ name }: INavigationRoute) =>
         route.path.endsWith(`${name}`),
-      )
-    }
+      );
+    };
 
     const setActiveExpand = () => {
       value.value = navigationRoutes.routes.map((route: INavigationRoute) =>
         routeHasActiveChild(route),
-      )
-    }
+      );
+    };
 
-    const sidebarWidth = computed(() => (props.mobile ? '100vw' : '280px'))
-    const color = computed(() => getColor('background-secondary'))
-    const activeColor = computed(() => colorToRgba(getColor('focus'), 0.1))
+    const sidebarWidth = computed(() => (props.mobile ? '100vw' : '280px'));
+    const color = computed(() => getColor('background-secondary'));
+    const activeColor = computed(() => colorToRgba(getColor('focus'), 0.1));
 
     const iconColor = (route: INavigationRoute) => {
-      return routeHasActiveChild(route) ? 'primary' : 'secondary'
-    }
+      return routeHasActiveChild(route) ? 'primary' : 'secondary';
+    };
 
     const textColor = (route: INavigationRoute) => {
-      return routeHasActiveChild(route) ? 'primary' : 'textPrimary'
-    }
+      return routeHasActiveChild(route) ? 'primary' : 'textPrimary';
+    };
 
     const arrowDirection = (state: boolean) => {
-      return state ? 'va-arrow-up' : 'va-arrow-down'
-    }
+      return state ? 'va-arrow-up' : 'va-arrow-down';
+    };
 
-    watch(() => route.fullPath, setActiveExpand, { immediate: true })
+    watch(() => route.fullPath, setActiveExpand, { immediate: true });
 
     return {
       writableVisible,
@@ -73,9 +73,9 @@ export default defineComponent({
       iconColor,
       textColor,
       arrowDirection,
-    }
+    };
   },
-})
+});
 </script>
 <template>
   <VaSidebar

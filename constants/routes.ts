@@ -1,13 +1,13 @@
 export interface INavigationRoute {
-  name: string
-  displayName: string
-  meta?: { icon: string }
-  children?: INavigationRoute[]
+  name: string;
+  displayName: string;
+  meta?: { icon: string };
+  children?: INavigationRoute[];
 }
 
 export const navigationRoutes: {
-  root: INavigationRoute
-  routes: INavigationRoute[]
+  root: INavigationRoute;
+  routes: INavigationRoute[];
 } = {
   root: {
     name: '/',
@@ -19,6 +19,13 @@ export const navigationRoutes: {
       displayName: 'Dashboard',
       meta: {
         icon: 'dashboard',
+      },
+    },
+    {
+      name: 'interview-practice',
+      displayName: 'Interview Practice',
+      meta: {
+        icon: 'assignment',
       },
     },
     {
@@ -43,4 +50,4 @@ export const navigationRoutes: {
       },
     },
   ],
-}
+};

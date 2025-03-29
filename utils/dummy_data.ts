@@ -1,4 +1,4 @@
-import type { User } from '~/types'
+import type { User } from '~/types';
 
 export const generateUsers = (total: number): User[] => {
   const sampleDevices = [
@@ -12,8 +12,8 @@ export const generateUsers = (total: number): User[] => {
     'Dell XPS 15',
     'Lenovo ThinkPad X1',
     'Huawei MateBook X Pro',
-  ]
-  const sampleBrowsers = ['Chrome', 'Safari', 'Firefox', 'Edge']
+  ];
+  const sampleBrowsers = ['Chrome', 'Safari', 'Firefox', 'Edge'];
   const sampleEmails = [
     'john.doe',
     'jane.smith',
@@ -23,7 +23,7 @@ export const generateUsers = (total: number): User[] => {
     'david.wilson',
     'emily.davis',
     'frank.thomas',
-  ].map((name) => `${name}@example.com`)
+  ].map((name) => `${name}@example.com`);
   const sampleIPs = [
     '192.168.1.',
     '192.168.2.',
@@ -35,7 +35,7 @@ export const generateUsers = (total: number): User[] => {
     '192.168.50.',
     '10.0.1.',
     '192.168.200.',
-  ]
+  ];
 
   return Array.from({ length: total }, (_, i) => ({
     id: i + 1,
@@ -45,5 +45,5 @@ export const generateUsers = (total: number): User[] => {
     time: new Date().toISOString(),
     email: sampleEmails[i % sampleEmails.length],
     active: Math.random() > 0.5,
-  }))
-}
+  }));
+};

@@ -1,24 +1,24 @@
 <script setup lang="ts">
-import { storeToRefs } from 'pinia'
-import { useGlobalStore } from '@/stores/global'
-import { signOut } from 'firebase/auth'
-import { useModal, useToast } from 'vuestic-ui'
-import { useCurrentUser } from 'vuefire'
-import LogoIcon from '~/assets/images/logo.svg'
+import { storeToRefs } from 'pinia';
+import { useGlobalStore } from '@/stores/global';
+import { signOut } from 'firebase/auth';
+import { useModal, useToast } from 'vuestic-ui';
+import { useCurrentUser } from 'vuefire';
+import LogoIcon from '~/assets/images/logo.svg';
 
-const auth = useFirebaseAuth()!
+const auth = useFirebaseAuth()!;
 
 defineProps({
   isMobile: { type: Boolean, default: false },
-})
+});
 
-const GlobalStore = useGlobalStore()
+const GlobalStore = useGlobalStore();
 
-const { isSidebarMinimized } = storeToRefs(GlobalStore)
+const { isSidebarMinimized } = storeToRefs(GlobalStore);
 
-const user = useCurrentUser()
-const { confirm } = useModal()
-const { init } = useToast()
+const user = useCurrentUser();
+const { confirm } = useModal();
+const { init } = useToast();
 
 const onLogout = async () => {
   const agreed = await confirm({
@@ -28,21 +28,21 @@ const onLogout = async () => {
     cancelText: 'Cancel',
     size: 'small',
     maxWidth: '380px',
-  })
+  });
 
   if (agreed) {
-    logout()
+    logout();
   }
-}
+};
 
 function logout() {
   signOut(auth)
     .then(() => {
-      init({ message: 'Sign out successfully', color: 'success' })
+      init({ message: 'Sign out successfully', color: 'success' });
     })
     .catch((_error) => {
-      init({ message: 'Sign out failed', color: 'error' })
-    })
+      init({ message: 'Sign out failed', color: 'error' });
+    });
 }
 </script>
 

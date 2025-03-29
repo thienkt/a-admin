@@ -1,2 +1,2 @@
-export * from './dummy_data'
-export * from './validators'
+export * from './dummy_data';
+export * from './validators';

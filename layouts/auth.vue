@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import { useBreakpoint } from 'vuestic-ui'
-import LogoIcon from '~/assets/images/logo.svg'
-const breakpoint = useBreakpoint()
+import { useBreakpoint } from 'vuestic-ui';
+import LogoIcon from '~/assets/images/logo.svg';
+const breakpoint = useBreakpoint();
 </script>
 
 <template>

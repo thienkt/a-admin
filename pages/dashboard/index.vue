@@ -1,10 +1,10 @@
 <script lang="ts" setup>
-import { defineVaDataTableColumns } from 'vuestic-ui'
-import { generateUsers } from '~/utils'
-import Table from '~/components/dashboard/Table.vue'
-import DataSection from '@/components/dashboard/DataSection.vue'
+import { defineVaDataTableColumns } from 'vuestic-ui';
+import { generateUsers } from '~/utils';
+import Table from '~/components/dashboard/Table.vue';
+import DataSection from '@/components/dashboard/DataSection.vue';
 
-const listUser = ref(generateUsers(5))
+const listUser = ref(generateUsers(5));
 const columns = ref(
   defineVaDataTableColumns([
     { label: 'Email', key: 'email', sortable: true },
@@ -12,7 +12,7 @@ const columns = ref(
     { label: 'Device', key: 'device', sortable: true },
     { label: 'Login Time', key: 'time', sortable: true },
   ]),
-)
+);
 </script>
 
 <template>

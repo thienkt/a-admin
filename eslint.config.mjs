@@ -1,7 +1,7 @@
 // @ts-ignore
-import tsParser from '@typescript-eslint/parser'
-import withNuxt from './.nuxt/eslint.config.mjs'
-import vueParser from 'vue-eslint-parser'
+import tsParser from '@typescript-eslint/parser';
+import withNuxt from './.nuxt/eslint.config.mjs';
+import vueParser from 'vue-eslint-parser';
 
 export default withNuxt({
   files: ['**/*.vue'],
@@ -20,4 +20,4 @@ export default withNuxt({
     'vue/no-multiple-template-root': 'off',
     'vue/no-v-html': 'off',
   },
-})
+});

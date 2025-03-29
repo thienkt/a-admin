@@ -1,70 +1,70 @@
 <script setup lang="ts">
-import { onBeforeUnmount, onMounted, ref } from 'vue'
-import { storeToRefs } from 'pinia'
-import { onBeforeRouteUpdate } from 'vue-router'
-import { useBreakpoint } from 'vuestic-ui'
-import { useGlobalStore } from '@/stores/global'
-import { useCurrentUser } from 'vuefire'
+import { onBeforeUnmount, onMounted, ref } from 'vue';
+import { storeToRefs } from 'pinia';
+import { onBeforeRouteUpdate } from 'vue-router';
+import { useBreakpoint } from 'vuestic-ui';
+import { useGlobalStore } from '@/stores/global';
+import { useCurrentUser } from 'vuefire';
 
-import LayoutNavigation from '@/components/layout/Navigation.vue'
-import Navbar from '@/components/layout/Navbar.vue'
-import Sidebar from '@/components/layout/Sidebar.vue'
+import LayoutNavigation from '@/components/layout/Navigation.vue';
+import Navbar from '@/components/layout/Navbar.vue';
+import Sidebar from '@/components/layout/Sidebar.vue';
 
-const GlobalStore = useGlobalStore()
-const breakpoints = useBreakpoint()
+const GlobalStore = useGlobalStore();
+const breakpoints = useBreakpoint();
 
-const sidebarWidth = ref('16rem')
-const sidebarMinimizedWidth = ref('4.5rem')
+const sidebarWidth = ref('16rem');
+const sidebarMinimizedWidth = ref('4.5rem');
 
-const isMobile = ref(false)
-const isTablet = ref(false)
-const { isSidebarMinimized } = storeToRefs(GlobalStore)
+const isMobile = ref(false);
+const isTablet = ref(false);
+const { isSidebarMinimized } = storeToRefs(GlobalStore);
 
 const onResize = () => {
-  isSidebarMinimized.value = breakpoints.mdDown
-  isMobile.value = breakpoints.smDown
-  isTablet.value = breakpoints.mdDown
-  sidebarMinimizedWidth.value = isMobile.value ? '0' : '4.5rem'
-  sidebarWidth.value = isTablet.value ? '100%' : '16rem'
-}
+  isSidebarMinimized.value = breakpoints.mdDown;
+  isMobile.value = breakpoints.smDown;
+  isTablet.value = breakpoints.mdDown;
+  sidebarMinimizedWidth.value = isMobile.value ? '0' : '4.5rem';
+  sidebarWidth.value = isTablet.value ? '100%' : '16rem';
+};
 
-const router = useRouter()
-const route = useRoute()
-const user = useCurrentUser()
+const router = useRouter();
+const route = useRoute();
+const user = useCurrentUser();
 
 onMounted(() => {
   watch(user, (user, prevUser) => {
     if (prevUser && !user) {
       // user logged out
-      router.push('/')
+      router.push('/');
     } else if (user && typeof route.query.redirect === 'string') {
       // user logged in
-      router.push(route.query.redirect)
+      router.push(route.query.redirect);
     }
-  })
+  });
 
-  window.addEventListener('resize', onResize)
-  onResize()
-})
+  window.addEventListener('resize', onResize);
+  onResize();
+});
 
 onBeforeUnmount(() => {
-  window.removeEventListener('resize', onResize)
-})
+  window.removeEventListener('resize', onResize);
+});
 
 onBeforeRouteUpdate(() => {
   if (breakpoints.mdDown) {
     // Collapse sidebar after route change for Mobile
-    isSidebarMinimized.value = true
+    isSidebarMinimized.value = true;
   }
-})
+});
 
 const isFullScreenSidebar = computed(
   () => isTablet.value && !isSidebarMinimized.value,
-)
+);
 
 const onCloseSidebarButtonClick = () => {
-  isSidebarMinimized.value = true
-}
+  isSidebarMinimized.value = true;
+};
 </script>
 
 <template>

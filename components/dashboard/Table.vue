@@ -1,19 +1,19 @@
 <script setup lang="ts">
-import type { DataTableColumnSource } from 'vuestic-ui'
-import { type PropType, toRef } from 'vue'
-import { useVModel } from '@vueuse/core'
-import type { User } from '@/types'
+import type { DataTableColumnSource } from 'vuestic-ui';
+import { type PropType, toRef } from 'vue';
+import { useVModel } from '@vueuse/core';
+import type { User } from '@/types';
 
 export type Pagination = {
-  page: number
-  perPage: number
-  total: number
-}
+  page: number;
+  perPage: number;
+  total: number;
+};
 
 export type Sorting = {
-  sortBy: keyof User | undefined
-  sortingOrder: 'asc' | 'desc' | null
-}
+  sortBy: keyof User | undefined;
+  sortingOrder: 'asc' | 'desc' | null;
+};
 
 const props = defineProps({
   users: {
@@ -35,18 +35,18 @@ const props = defineProps({
     type: String as PropType<Sorting['sortingOrder']>,
     default: null,
   },
-})
+});
 
 const emit = defineEmits<{
-  (event: 'update:sortBy', sortBy: Sorting['sortBy']): void
-  (event: 'update:sortingOrder', sortingOrder: Sorting['sortingOrder']): void
-}>()
+  (event: 'update:sortBy', sortBy: Sorting['sortBy']): void;
+  (event: 'update:sortingOrder', sortingOrder: Sorting['sortingOrder']): void;
+}>();
 
-const users = toRef(props, 'users')
-const sortByVModel = useVModel(props, 'sortBy', emit)
-const sortingOrderVModel = useVModel(props, 'sortingOrder', emit)
+const users = toRef(props, 'users');
+const sortByVModel = useVModel(props, 'sortBy', emit);
+const sortingOrderVModel = useVModel(props, 'sortingOrder', emit);
 
-const formatDate = (date: string) => new Date(date).toLocaleString()
+const formatDate = (date: string) => new Date(date).toLocaleString();
 </script>
 
 <template>

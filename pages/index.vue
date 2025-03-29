@@ -3,57 +3,58 @@ import {
   GoogleAuthProvider,
   signInWithPopup,
   signInWithEmailAndPassword,
-} from 'firebase/auth'
-import { reactive } from 'vue'
-import { useRouter } from 'vue-router'
-import { useForm, useToast } from 'vuestic-ui'
-import { validators } from '@/utils'
+} from 'firebase/auth';
+import { reactive } from 'vue';
+import { useRouter } from 'vue-router';
+import { useForm, useToast } from 'vuestic-ui';
+import { validators } from '@/utils';
 
-const auth = useFirebaseAuth()!
+const auth = useFirebaseAuth()!;
 
 definePageMeta({
   layout: 'auth',
-})
+});
 
-const { validate } = useForm('form')
-const { push } = useRouter()
-const { init } = useToast()
+const { validate } = useForm('form');
+const { push } = useRouter();
+const { init } = useToast();
+const route = useRoute();
 
 const formData = reactive({
   email: '',
   password: '',
   keepLoggedIn: false,
-})
+});
 
 const submit = () => {
   if (validate()) {
     signInWithEmailAndPassword(auth, formData.email, formData.password)
       .then(() => {
-        init({ message: "You've successfully logged in", color: 'success' })
-        push({ name: 'dashboard' })
+        init({ message: "You've successfully logged in", color: 'success' });
+        push({ name: 'dashboard' });
       })
       .catch(() => {
         init({
           message: 'Login failed. Please check your credentials and try again.',
           color: 'error',
-        })
-      })
+        });
+      });
   }
-}
+};
 
 const loginWithGoogle = () => {
   signInWithPopup(auth, new GoogleAuthProvider())
     .then(() => {
-      init({ message: "You've successfully logged in", color: 'success' })
-      push({ name: 'dashboard' })
+      init({ message: "You've successfully logged in", color: 'success' });
+      push({ name: route.query.redirect || 'dashboard' });
     })
     .catch(() => {
       init({
         message: 'Login failed. Please check your credentials and try again.',
         color: 'error',
-      })
-    })
-}
+      });
+    });
+};
 </script>
 
 <template>
