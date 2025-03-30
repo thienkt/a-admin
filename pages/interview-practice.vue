@@ -29,16 +29,6 @@ const languageOptions = [
   { value: 'ko', text: '한국어' },
 ];
 
-const codeLanguageOptions = [
-  { value: 'text', text: 'Plain Text' },
-  { value: 'javascript', text: 'JavaScript' },
-  { value: 'typescript', text: 'TypeScript' },
-  { value: 'python', text: 'Python' },
-  { value: 'java', text: 'Java' },
-  { value: 'c', text: 'C' },
-  { value: 'cpp', text: 'C++' },
-];
-
 const loading = ref(false);
 const jdInputMethod = ref('text');
 const jdText = ref('');
@@ -229,25 +219,27 @@ const startNewInterview = () => {
 </script>
 
 <template>
-  <div class="container mx-auto p-4">
-    <VaCardTitle>
-      <h1 class="text-3xl font-bold">Interview Practice</h1>
-    </VaCardTitle>
+  <h1
+    class="page-title text-[32px] md:text-5xl font-bold leading-9 md:leading-[56px] max-sm:mt-6 mb-6 md:mb-4"
+  >
+    Interview Practice
+  </h1>
 
-    <!-- Error display -->
-    <VaAlert v-if="error" class="mb-4" color="danger" closeable>
-      {{ error }}
-    </VaAlert>
+  <!-- Error display -->
+  <VaAlert v-if="error" class="mb-4" color="danger" closeable>
+    {{ error }}
+  </VaAlert>
 
-    <!-- Success message -->
-    <VaAlert v-if="success" class="mb-4" color="success" closeable>
-      {{ success }}
-    </VaAlert>
+  <!-- Success message -->
+  <VaAlert v-if="success" class="mb-4" color="success" closeable>
+    {{ success }}
+  </VaAlert>
 
+  <section class="flex flex-col gap-4">
     <!-- JD Input Section -->
-    <VaCard v-if="questions.length === 0" class="mb-8">
+    <VaCard v-if="questions.length === 0" class="w-full">
       <VaCardTitle>
-        <h2 class="text-xl font-semibold">
+        <h2 class="card-title text-secondary font-bold uppercase text-xl">
           Enter Job Description or Curriculum Vitae
         </h2>
       </VaCardTitle>
@@ -272,6 +264,7 @@ const startNewInterview = () => {
             placeholder="Paste your Job Description or Curriculum Vitae here..."
             rows="8"
             class="w-full"
+            autosize
           />
         </div>
 
@@ -316,9 +309,11 @@ const startNewInterview = () => {
     </VaCard>
 
     <!-- Questions & Answers Phase -->
-    <div v-else-if="isAnsweringPhase" class="interview-section">
+    <div v-else-if="isAnsweringPhase" class="w-full">
       <div class="flex justify-between items-center mb-4">
-        <h2 class="text-xl font-semibold">Answer all questions below</h2>
+        <h2 class="card-title text-secondary font-bold uppercase text-xl">
+          Answer all questions below
+        </h2>
         <VaButton
           :loading="loading"
           preset="primary"
@@ -330,44 +325,36 @@ const startNewInterview = () => {
       </div>
 
       <!-- Questions List -->
-      <div v-for="question in questions" :key="question.id" class="mb-8">
-        <!-- Question Card -->
-        <VaCard class="mb-4" gradient>
+      <div class="flex flex-col gap-4">
+        <VaCard v-for="question in questions" :key="question.id" class="w-full">
           <VaCardContent>
-            <div class="flex justify-between mb-2">
+            <!-- Question Header -->
+            <div class="flex justify-between mb-4">
               <VaBadge color="primary">{{ question.category }}</VaBadge>
               <VaBadge color="info">Question {{ question.id }}</VaBadge>
             </div>
-            <h3 class="text-xl font-medium">{{ question.question }}</h3>
-          </VaCardContent>
-        </VaCard>
 
-        <!-- Answer Input -->
-        <VaCard>
-          <VaCardTitle>
-            <div class="flex justify-between items-center w-full">
-              <h3 class="font-medium">Your Answer</h3>
-              <VaSelect
-                v-model="codeLanguages[question.id]"
-                :options="codeLanguageOptions"
-                label-by="text"
-                track-by="value"
-                class="w-48"
+            <!-- Question -->
+            <h3 class="text-xl font-medium mb-4">{{ question.question }}</h3>
+
+            <!-- Answer Input -->
+            <div class="mt-4">
+              <div class="flex justify-between items-center w-full mb-2">
+                <h4 class="font-medium">Your Answer</h4>
+              </div>
+              <VaTextarea
+                v-model="answers[question.id]"
+                :min-rows="6"
+                placeholder="Type your answer here..."
+                class="w-full font-mono"
+                autosize
               />
             </div>
-          </VaCardTitle>
-          <VaCardContent>
-            <VaTextarea
-              v-model="answers[question.id]"
-              :placeholder="`Type your answer here...${codeLanguages[question.id] !== 'text' ? ' You can use ' + codeLanguages[question.id] + ' syntax.' : ''}`"
-              rows="6"
-              class="w-full font-mono"
-            />
           </VaCardContent>
         </VaCard>
       </div>
 
-      <div class="flex justify-center mt-8">
+      <div class="flex justify-center mt-6">
         <VaButton
           :loading="loading"
           preset="primary"
@@ -380,17 +367,19 @@ const startNewInterview = () => {
     </div>
 
     <!-- Evaluation Results Phase -->
-    <div v-else class="evaluation-section">
+    <div v-else class="w-full">
       <div class="flex justify-between items-center mb-4">
-        <h2 class="text-xl font-semibold">Evaluation Results</h2>
+        <h2 class="card-title text-secondary font-bold uppercase text-xl">
+          Evaluation Results
+        </h2>
         <VaButton color="secondary" @click="startNewInterview">
           Start New Questions
         </VaButton>
       </div>
 
       <!-- Results List -->
-      <div v-for="question in questions" :key="question.id" class="mb-8">
-        <VaCard>
+      <div class="flex flex-col gap-4">
+        <VaCard v-for="question in questions" :key="question.id" class="w-full">
           <VaCardTitle>
             <div class="flex justify-between w-full">
               <h3 class="font-medium">
@@ -509,7 +498,7 @@ const startNewInterview = () => {
       </div>
 
       <!-- Reset Button -->
-      <div class="mt-8 flex justify-between">
+      <div class="mt-6 flex justify-between">
         <VaButton color="danger" @click="resetInterview">
           Start Completely New Interview
         </VaButton>
@@ -518,5 +507,5 @@ const startNewInterview = () => {
         </VaButton>
       </div>
     </div>
-  </div>
+  </section>
 </template>

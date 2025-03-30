@@ -1,32 +1,17 @@
-import { readFile } from 'fs/promises';
 import { GoogleGenerativeAI } from '@google/generative-ai';
-import multer from 'multer';
-// @ts-expect-error - No types available for pdf-parse
-import pdf from 'pdf-parse/lib/pdf-parse';
-import { defineEventHandler, readBody, getRequestHeaders } from 'h3';
-import path from 'path';
+import { createRequire } from 'module';
+import {
+  defineEventHandler,
+  readBody,
+  getRequestHeaders,
+  readMultipartFormData,
+} from 'h3';
 
 interface Question {
   id: number;
   question: string;
   category: string;
 }
-
-// Configure multer for file uploads
-const upload = multer({
-  storage: multer.diskStorage({
-    destination: path.resolve(process.cwd(), 'server/uploads'),
-    filename: (
-      req: unknown,
-      file: Express.Multer.File,
-      cb: (error: Error | null, filename: string) => void,
-    ) => {
-      const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
-      cb(null, `${uniqueSuffix}-${file.originalname}`);
-    },
-  }),
-  limits: { fileSize: 10 * 1024 * 1024 }, // 10MB limit
-});
 
 const genAI = new GoogleGenerativeAI(process.env.GOOGLE_AI_API_KEY || '');
 
@@ -36,57 +21,51 @@ export default defineEventHandler(async (event) => {
 
     // Handle file upload if multipart/form-data
     if (contentType.includes('multipart/form-data')) {
-      return new Promise((resolve, reject) => {
-        const multerMiddleware = upload.single('file');
-        // @ts-expect-error - multer types don't match exactly with h3's event
-        multerMiddleware(event.node.req, event.node.res, async (err) => {
-          if (err) {
-            console.error('Multer error:', err);
-            reject({ error: 'File upload failed', details: err.message });
-            return;
-          }
+      const formData = await readMultipartFormData(event);
 
-          try {
-            // @ts-expect-error - multer adds file to request
-            const file = event.node.req.file;
+      if (!formData || formData.length === 0) {
+        return { error: 'No form data received' };
+      }
 
-            if (!file) {
-              reject({ error: 'No file uploaded' });
-              return;
-            }
+      // Find the file part in the form data
+      const filePart = formData.find((part) => part.name === 'file');
+      const languagePart = formData.find((part) => part.name === 'language');
+      const language =
+        languagePart && languagePart.data
+          ? new TextDecoder().decode(languagePart.data)
+          : 'en';
 
-            // Process PDF file
-            if (file.mimetype === 'application/pdf') {
-              const fileBuffer = await readFile(file.path);
+      if (!filePart || !filePart.data) {
+        return { error: 'No file uploaded' };
+      }
 
-              // Get language from the form data if available
-              // @ts-expect-error - accessing body field from the request
-              const language = event.node.req.body.language || 'en';
+      // Check file type by looking at filename or content-type
+      const filename = filePart.filename || '';
+      const isPdf =
+        filePart.type === 'application/pdf' ||
+        filename.toLowerCase().endsWith('.pdf');
 
-              const pdfData = await pdf(fileBuffer);
-              const jdText = pdfData.text;
+      if (!isPdf) {
+        return { error: 'Unsupported file type. Please upload a PDF file.' };
+      }
 
-              const questions = await generateInterviewQuestions(
-                jdText,
-                language,
-              );
-              resolve({
-                questions,
-                pdfContent: jdText, // Return the PDF text content
-              });
-            } else {
-              reject({
-                error: 'Unsupported file type. Please upload a PDF file.',
-              });
-            }
-          } catch (error) {
-            reject({
-              error: 'Failed to process file',
-              details: error instanceof Error ? error.message : String(error),
-            });
-          }
-        });
-      });
+      try {
+        // Process the PDF directly from the buffer
+        const pdf = createRequire(import.meta.url)('pdf-parse');
+        const pdfData = await pdf(filePart.data);
+        const jdText = pdfData.text;
+
+        const questions = await generateInterviewQuestions(jdText, language);
+        return {
+          questions,
+          pdfContent: jdText, // Return the PDF text content
+        };
+      } catch (error) {
+        return {
+          error: 'Failed to process file',
+          details: error instanceof Error ? error.message : String(error),
+        };
+      }
     } else {
       // Handle direct JD text input
       const body = await readBody(event);

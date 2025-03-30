@@ -4,7 +4,9 @@
     "plugin:prettier/recommended"
   ],
   "rules": {
-    "vue/script-setup-uses-vars": "error",
-    "vue/no-multiple-template-root": "off"
+    "@typescript-eslint/no-explicit-any": "warn",
+    "vue/object-curly-spacing": [2, "always"],
+    "vue/no-multiple-template-root": "off",
+    "vue/no-v-html": "off"
   }
 }
