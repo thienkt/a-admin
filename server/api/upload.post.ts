@@ -97,7 +97,7 @@ async function generateInterviewQuestions(
     const model = genAI.getGenerativeModel({ model: 'gemma-3-27b-it' });
 
     const prompt = `
-I need you to create 5 interview questions based on the following job description.
+I need you to create 15 interview questions based on the following job description.
 
 Job Description:
 ${jdText}
@@ -131,6 +131,56 @@ Return your response in the following JSON format only, with no additional text:
   {
     "id": 5,
     "question": "[fifth interview question]",
+    "category": "[technical or behavioral or general]"
+  },
+  {
+    "id": 6,
+    "question": "[sixth interview question]",
+    "category": "[technical or behavioral or general]"
+  },
+  {
+    "id": 7,
+    "question": "[seventh interview question]",
+    "category": "[technical or behavioral or general]"
+  },
+  {
+    "id": 8,
+    "question": "[eighth interview question]",
+    "category": "[technical or behavioral or general]"
+  },
+  {
+    "id": 9,
+    "question": "[ninth interview question]",
+    "category": "[technical or behavioral or general]"
+  },
+  {
+    "id": 10,
+    "question": "[tenth interview question]",
+    "category": "[technical or behavioral or general]"
+  },
+  {
+    "id": 11,
+    "question": "[eleventh interview question]",
+    "category": "[technical or behavioral or general]"
+  },
+  {
+    "id": 12,
+    "question": "[twelfth interview question]",
+    "category": "[technical or behavioral or general]"
+  },
+  {
+    "id": 13,
+    "question": "[thirteenth interview question]",
+    "category": "[technical or behavioral or general]"
+  },
+  {
+    "id": 14,
+    "question": "[fourteenth interview question]",
+    "category": "[technical or behavioral or general]"
+  },
+  {
+    "id": 15,
+    "question": "[fifteenth interview question]",
     "category": "[technical or behavioral or general]"
   }
 ]
